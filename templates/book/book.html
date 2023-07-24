@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}||Book details{% endblock title %}
+
+{% block content %}
+<div class="container">
+    {% if book %}
+        <div class="row">
+            <div class="col-md-6 p-4">
+                <img src="{{book.image.url}}" class="w-100">
+            </div>
+            <div class="col-md-6 ">
+                <h4 class="display-4">{{book.title}}</h4>
+                <p><i class="fa-regular fa-user"></i> Author: {{book.author}}</p>
+                <p><i class="fa-solid fa-globe"></i> Publisher: {{book.publisher}}</p>
+                <p><i class="fa-regular fa-calendar"></i> Publication year: {{book.publication_year}}</p>
+                <p><strong><i class="fa-solid fa-indian-rupee-sign"></i> Price: {{book.price}}</strong></p>
+                <p class="lead" style="text-align: justify">{{book.description}}</p>
+
+                <div class="my-3">
+                    {% if user.is_authenticated %}
+
+                        <form action="{% url 'add_to_cart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name='book_id' value="{{book.id}}">
+                            <div class="input-group mb-3">
+                                <button type="button" class="btn btn-outline-secondary" onclick='decrement()'>-</button>
+                                <input type="text" name='quantity' id="quantity" class="text-center" value='{{quantity}}' readonly required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="increment()">+</button>
+                            </div>
+                            <input type="submit" value="Add to cart" class="btn btn-primary w-100">
+                        </form>
+                    {% else %}
+                        <a href="{% url 'signin' %}" class="btn btn-primary w-100">Sign In to Buy</a>
+                    {% endif %}
+                </div>
+                <div class="my-3">
+                    {% if feedbacks %}
+                    <h3 class="mb-2">Reviews & Ratings</h3>
+                    {% for feedback in feedbacks %}
+                        <div class="card border-0 border-bottom my-1">
+                            <div class="card-body">
+                                <p class="mb-1 text-primary fw-bolder">{{feedback.user.username}}</p>
+                                <p class="mb-1">{{feedback.rating}}
+                                    <span class="fa fa-star {% if feedback.rating >= 1 %}checked{% endif %}" ></span>
+                                    <span class="fa fa-star {% if feedback.rating >= 2 %}checked{% endif %}" ></span>
+                                    <span class="fa fa-star {% if feedback.rating >= 3 %}checked{% endif %}" ></span>
+                                    <span class="fa fa-star {% if feedback.rating >= 4 %}checked{% endif %}" ></span>
+                                    <span class="fa fa-star {% if feedback.rating >= 5 %}checked{% endif %}" ></span>
+                                </p>
+                                <p class="mb-1">{{feedback.comment}}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+    {% else %}
+        <h4 class="my-3 text-center text-danger">No such book found</h4>
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block extrajs %}
+    <script>
+        let quantity=document.getElementById('quantity')
+        function decrement(){
+            if(quantity.value > 1){
+                quantity.value = Number(quantity.value) - 1;
+            }
+        }
+
+        function increment(){
+                quantity.value = Number(quantity.value) + 1;
+        }
+    </script>
+{% endblock extrajs %}

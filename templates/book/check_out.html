@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}|| check out{% endblock title %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-4 p-2 order-md-2">
+                <h4 class="bg-primary text-white p-2">Order Summary</h4>
+                <table class="table">
+                    {% for book in books %}
+                        <tr>
+                            <td>{{book.title}} X {{book.quantity}}</td>
+                            <td>{{book.price}}</td>
+                        </tr>
+                    {% endfor %}
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong>{{total_price}}</strong></td>
+                        </tr>
+                        
+                </table>
+
+
+            </div>
+            <div class="col-md-8 p-2">
+                {% if addresses %}
+
+                <form action="{% url 'place_order' %}" method='POST'>
+                    {% csrf_token %}
+                    <h4 class="bg-primary text-white p-2" >Select Address</h4>
+                    {% for a in addresses %}
+                    <label class="d-block border m-1 p-2">
+                        <input type="radio" name = "address" value = "{{a.id}}" required>{{a}}
+                    </label>
+                    
+                    {% endfor %}
+                
+                <button type="button" class="btn btn-primary text-center my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add new address
+                </button>
+                <h4 class="bg-primary text-white p-2" >Select payment method</h4>
+                <label class="d-block border p-2 mb-2">
+                    <input type="radio" name = "payment_mode" value = "COD" required>Cash On Delivery
+                </label>
+                <label class="d-block border p-2 mb-2">
+                    <input type="radio" name = "payment_mode" value = "online" required>Online
+                </label>
+
+                <input type="submit" value = "Place Order" class="btn btn-primary text-center rounded-0 form-control">
+                {% else %}
+                <h4 class="text-center">No Address Available </h4>
+                <button type="button" class="btn btn-primary text-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add new address
+                </button>
+                {% endif %}
+            </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Address</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'add_address' %}" method='POST'>
+                {% csrf_token %}
+                <input type="text" name = "address_line_one" placeholder = "address_line_one" required class="form-control mb-1">
+                <input type="text" name = "address_line_two" placeholder = "address_line_two" required class="form-control mb-1">
+                <input type="text" name = "landmark" placeholder = "landmark" required class="form-control mb-1">
+                <input type="text" name = "locality" placeholder = "locality" required class="form-control mb-1">
+                <input type="text" name = "city" placeholder = "city" required class="form-control mb-1">
+                <input type="text" name = "state" placeholder = "state" required class="form-control mb-1">
+                <input type="text" name = "country" placeholder = "country" required class="form-control mb-1">
+                <input type="text" name = "zip" placeholder = "zip" required class="form-control mb-1">
+                <input type="text" name = "mobile" placeholder = "mobile" required class="form-control mb-1">
+                <div class="modal-footer">
+                        <input type="submit" value = "Add" class="btn btn-primary text-center">
+                    </div>
+            </form>
+        </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}

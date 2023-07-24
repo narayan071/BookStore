@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}||all books{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-2">
+            
+            {% include 'sidebar.html' %}
+        </div>
+        <div class="col-md-10">
+            <div class="container my-5">
+                {% if books %}
+                <div class="row">
+                    {% for book in books %}
+                        <div class="col-md-2 mx-auto">
+                            <div class="card border-0 m-1">
+                                <img src="{{book.image.url}}" class="card-img-top rounded-3" style="height:200px;">
+                                <div class="card-body p-0">
+                                    <h6 class="card-text" style="height: 3px;">{{book.title}}</h6>
+                                    <p class="mt-5"><i class="fa-solid fa-indian-rupee-sign"></i> {{book.price}}</p>
+                                    <a href="{% url 'book_details' book.id %}" class="btn btn-sm btn-outline-primary w-100">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <h3 class="text-center my-3">No books available</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

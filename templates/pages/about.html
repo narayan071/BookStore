@@ -1,0 +1,74 @@
+
+{% extends 'base.html' %}
+
+{% block title %}|| about{% endblock title %}
+
+{% block content %}
+
+<h1 class="text-center">about us from django</h1>
+    <div class="container">
+    <h2 class="text-center bg-danger">Hello {{name}} you're {{age}} years old</h2>
+
+    {% if num1 > num2%}
+        <h2>{{num1}} is greater</h2>
+    {%else%}
+        <h2>{{num2}} is greater</h2>
+    {% endif %} 
+{% comment %} declare variables {% endcomment %}
+    {% with  x=5  %}    
+        {{x}}
+    {% endwith %}
+
+    <ul>
+    {% comment %} loops {% endcomment %}
+
+    {%for i in k %}
+        <li>{{i}}</li>
+    {%endfor%}
+</ul>
+
+{% comment %} <ul>
+
+    {% for k,v in students.items %}
+
+    {{k}} - {{v}} <br>
+
+    {%endfor%}
+
+    </ul> {% endcomment %}
+
+
+    <table border = "1">
+        <tr><th>Roll</th><th>Name</th></tr>
+        {% for k,v in students.items %}
+        <tr><td>{{k}}</td><td>{{v}}</td></tr>
+        {%endfor%}
+    </table>
+
+    <br><br><br>
+
+    <table border = "1">
+        <tr><th>roll</th><th>name</th><th>sem1</th><th>sem2</th><th>sem3</th><th>sem4</th></tr>
+        {% for k,v in results.items %}
+        <tr>
+            <td>{{k}}</td>
+            <td>{{v.name}}</td>
+            <td>{{v.cgpa.0}}</td>
+            <td>{{v.cgpa.1}}</td>
+            <td>{{v.cgpa.2}}</td>
+            <td>{{v.cgpa.3}}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+</div>
+
+
+{% endblock content %}
+
+
+
+ 
+    
+
